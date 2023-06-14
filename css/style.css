@@ -1,0 +1,159 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* объявление переменных */
+:root{
+    --index: calc(1vw + 1vh); /* адаптивность шрифта под любой размер */
+    --text: #e7e7d3;
+    --transition: transform .75s cubic-bezier(.075, 0.5, 0, 1);
+}
+
+@font-face {
+    /* нужно указать суффикс, чтобы система не грузила встроенные шрифт, а брала с сайта. */
+    font-family: web_font;
+    src: url(../fonts/raleway-black.woff2);
+    font-weight: 900;
+}
+
+@font-face {
+    font-family: web_font;
+    src: url(../fonts/raleway-regular.woff2)
+}
+
+body {
+    background-color: #020202;
+    font-family: web_font, sans-serif;
+    line-height: 1.55;
+    /* line-height - определяет межстрочный интервал */
+}
+
+.main__header {
+    position: relative;
+}
+
+.main__header::after {
+    content: '';
+    position: absolute;
+    z-index: 100;
+    width: 100%;
+    height: calc(var(--index) * 10); /* адаптивное выщитывание размера для склейки */
+    background: url(../img/ground.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    bottom: calc(var(--index) * -5.2); /* адаптивное смещение заклейки между двумя бэкграундами */
+}
+
+.layers {
+    height: 100vh;
+    /* height: 100vh; -> высота экрана сверху, до низу */
+    display: flex; /* адаптивность к дисплею */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* align-items: center; -> центрирование объектов по вертикали
+    justify-content: center; -> центрирование объектов по горизонтали */
+    overflow: hidden; /* чтобы лишняя деталь не выглядывала */
+    position: relative;
+}
+
+.layer {
+    height: 100%;
+    width: 100%;
+    position: absolute; /* чтобы картинки встали на свои места */
+    background-size: cover; /* можно и contain */
+    background-position: center; /* центрировать бэкграунд */
+    will-change: transform; /* для динамических объектов нужно указывать will-change и свойство */
+    z-index: 2;
+    transition: var(--transition);
+    /* свойство z-index: place; => указывает на приоритет плана */
+}
+
+.layer__base {
+    transition: var(--transition);
+    transform: translate3d(0, calc(var(--scrollTop) / 1.6), 0); /* translate 3d аккуратно использует аппаратные ресурсы */
+    /* определяем скрость скролла в два раза меньше */
+    z-index: 0;
+}
+
+.layer__title {
+    transition: var(--transition);
+    transform: translate3d(0, calc(var(--scrollTop) / 2.5), 0);
+}
+
+.layer__front {
+    transition: var(--transition);
+    transform: translate3d(0, calc(var(--scrollTop) / 5.7), 0);
+}
+
+.layers__header {
+    transition: var(--transition);
+    z-index: 1; /* выдвинуть надпись на передний план самого крайнего фона */
+    transform: translate3d(0, calc(var(--scrollTop) / 2), 0);
+    will-change: transform;
+    text-transform: uppercase;
+    font-weight: 900;
+    color: var(--text);
+    text-shadow: 0 0 15px #9e7d35; /* по оси x, y, размытие и код цвета */
+}
+
+.layers__caption {
+    font-size: calc(var(--index) / 1.25);
+    letter-spacing: calc(var(--index) / 3.5);
+    margin-top: calc(var(--index) * -0.75); /* расчитывается сверху вниз, поэтому берется отрицательные значения */
+}
+
+.layers__title {
+    font-size: calc(var(--index) * 2.5);
+    letter-spacing: calc(var(--index) / 2.25);
+}
+
+.main__article {
+    transition: var(--transition);
+    --main-article-transform: translate3d(0, calc(var(--scrollTop) / -15), 0);
+    min-height: 100vh;
+    /* vh - view height => видимая высота.
+    В сулчае если картинка будет больше чем экран,
+    оно может не попасть в видимое поле */
+    background-size: cover;
+    background-position: center;
+    color: var(--text);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+}
+
+.main__article__header {
+    text-transform: uppercase;
+    font-size: calc(var(--index) * 2);
+    letter-spacing: calc(var(--index) / 7.5);
+    transform: var(--main-article-transform);
+    transition: var(--transition);
+    will-change: transform;
+}
+
+.main__article__paragraph {
+    max-width: calc(var(--index) * 30);
+    font-size: calc(var(--index) * 0.75);
+    margin-top: calc(var(--index) / 1.25);
+    transform: var(--main-article-transform);
+    transition: var(--transition);
+    will-change: transform;
+}
+
+.copy {
+    position: absolute;
+    bottom: calc(var(--index) * 2.5);
+    opacity: .45;
+    font-size: calc(var(--index) / 1.8);
+    letter-spacing: calc(var(--index) / 37.5);
+}
+
+.content {
+    will-change: transform;
+}
